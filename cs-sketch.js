@@ -7,41 +7,60 @@ var g_frame_cnt = 0; // Setup a P5 display-frame counter, to do anim
 var g_frame_mod = 24; // Update ever 'mod' frames.
 var g_stop = 0; // Go by default.
 
+
 function setup() // P5 Setup Fcn
 {
     let sz = g_canvas.cell_size;
     let width = sz * g_canvas.wid;  // Our 'canvas' uses cells of given size, not 1x1 pixels.
     let height = sz * g_canvas.hgt;
     createCanvas( width, height );  // Make a P5 canvas.
-    draw_grid( 10, 50, 'gray', 'white' );
+    draw_grid( 10, 50, 'black', 'white' );
 }
 
-var g_bot = { dir:3, x:20, y:20, color:100 }; // Dir is 0..7 clock, w 0 up.
+var g_bot = { dir:3, x:20, y:20, color: 'blue' }; // Dir is 0..7 clock, w 0 up.
 var g_box = { t:1, hgt:47, l:1, wid:63 }; // Box in which bot can move.
+var colorsArray = ['red', 'green', 'blue'];
 
 function move_bot( )
 {
-    let dir = (round (8 * random( ))) // Change direction at random; brownian motion.
+    // let dir = (round (8 * random( ))) // Change direction at random; brownian motion.
+    let dir = (round (4 * random( ))) // Change direction at random; brownian motion.
     let dx = 0;
     let dy = 0;
-    switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,2=Rt,4=Dn,6=Left.
-    case 0 : {         dy = -1; break; }
-    case 1 : { dx = 1; dy = -1; break; }
-    case 2 : { dx = 1; break; }
-    case 3 : { dx = 1; dy = 1; break; }
-    case 4 : {         dy = 1; break; }
-    case 5 : { dx = -1; dy = 1; break; }
-    case 6 : { dx = -1; break; }
-    case 7 : { dx = -1; dy = -1; break; }
+
+    if (g_bot.color != 'blue'){
+        dir = 6;
+        dx = -1;
     }
+    else {
+        dir = 4;
+        dy = 1;
+    }
+
+   
+    // switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,2=Rt,4=Dn,6=Left.
+    // case 0 : {         dy = -1; break; }
+    // case 1 : { dx = 1; dy = -1; break; }
+    // case 2 : { dx = 1; break; }
+    // case 3 : { dx = 1; dy = 1; break; }
+    // case 4 : {         dy = 1; break; }
+    // case 5 : { dx = -1; dy = 1; break; }
+    // case 6 : { dx = -1; break; }
+    // case 7 : { dx = -1; dy = -1; break; }
+    // }
+
+  
+
+
     let x = (dx + g_bot.x + g_box.wid) % g_box.wid; // Move-x.  Ensure positive b4 mod.
     let y = (dy + g_bot.y + g_box.hgt) % g_box.hgt; // Ditto y.
-    let color =  100 + (1 + g_bot.color) % 156; // Incr color in nice range.
+    // let color =  100 + (1 + g_bot.color) % 156; // Incr color in nice range.    
+    let color = round(random() * 2); // Choose randomly between RGB 
     g_bot.x = x; // Update bot x.
     g_bot.y = y;
     g_bot.dir = dir;
-    g_bot.color = color;
-    //console.log( "bot x,y,dir,clr = " + x + "," + y + "," + dir + "," +  color );
+    g_bot.color = colorsArray[color];
+    console.log( "bot x,y,dir,clr = " + x + "," + y + "," + dir + "," +  color );
 }
 
 function draw_bot( ) // Convert bot pox to grid pos & draw bot.
@@ -52,11 +71,12 @@ function draw_bot( ) // Convert bot pox to grid pos & draw bot.
     let y = 1+ g_bot.y*sz;
     let big = sz -2; // Stay inside cell walls.
     // Fill 'color': its a keystring, or a hexstring like "#5F", etc.  See P5 docs.
-    fill( "#" + g_bot.color ); // Concat string, auto-convert the number to string.
-    //console.log( "x,y,big = " + x + "," + y + "," + big );
+    // fill( "#" + g_bot.color ); // Concat string, auto-convert the number to string.
+    fill( g_bot.color ); // Concat string, auto-convert the number to string.
+    // console.log( "x,y,big = " + x + "," + y + "," + big );
     let acolors = get( x + sz2, y + sz2 ); // Get cell interior pixel color [RGBA] array.
     let pix = acolors[ 0 ] + acolors[ 1 ] + acolors[ 2 ];
-    //console.log( "acolors,pix = " + acolors + ", " + pix );
+    // console.log( "acolors,pix = " + acolors + ", " + pix );
 
     // (*) Here is how to detect what's at the pixel location.  See P5 docs for fancier...
     if (0 != pix) { fill( 0 ); stroke( 0 ); } // Turn off color of prior bot-visited cell.
