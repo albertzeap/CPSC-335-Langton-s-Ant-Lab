@@ -14,31 +14,75 @@ function setup() // P5 Setup Fcn
     let width = sz * g_canvas.wid;  // Our 'canvas' uses cells of given size, not 1x1 pixels.
     let height = sz * g_canvas.hgt;
     createCanvas( width, height );  // Make a P5 canvas.
-    draw_grid( 10, 50, 'black', 'white' );
+    draw_grid( 10, 50, 'gray', 'white' );
 }
 
-var g_bot = { dir:3, x:20, y:20, color: 'blue' }; // Dir is 0..7 clock, w 0 up.
+var g_bot = { dir:0, x:20, y:20, color: 'blue' }; // Dir is 0..7 clock, w 0 up.
 var g_box = { t:1, hgt:47, l:1, wid:63 }; // Box in which bot can move.
-var colorsArray = ['red', 'green', 'blue'];
+var colorsArray = ['blue', 'green', 'red']; //Array for colors
+var colorCounter = 0;
 
-function move_bot( )
+var straightMode = true;
+var straightCounter = 0;
+
+var LRMode = false;
+
+
+
+function move_bot()
 {
     // let dir = (round (8 * random( ))) // Change direction at random; brownian motion.
-    let dir = (round (4 * random( ))) // Change direction at random; brownian motion.
+    // let dir = (round (4 * random( ))) // Change direction at random; brownian motion.
+    let dir = 0; 
     let dx = 0;
     let dy = 0;
 
-    if (g_bot.color != 'blue'){
-        dir = 6;
-        dx = -1;
-    }
-    else {
-        dir = 4;
-        dy = 1;
+    
+    if (g_bot.color == 'blue'){
+        if (g_bot.dir == 0){
+            dir = 1;
+        }
+        if (g_bot.dir == 1){
+            dir = 2;
+        }
+        if (g_bot.dir == 2){
+            dir = 3;
+        }
+        if (g_bot.dir == 3){
+            dir = 0;
+        }
     }
 
-   
-    // switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,2=Rt,4=Dn,6=Left.
+    if (g_bot.color == 'green'){
+        if (g_bot.dir == 0){
+            dir = 3;
+        }
+        if (g_bot.dir == 1){
+            dir = 0;
+        }
+        if (g_bot.dir == 2){
+            dir = 1;
+        }
+        if (g_bot.dir == 3){
+            dir = 2;
+        }
+    }
+
+    if (g_bot.color == 'red'){
+        dir = g_bot.dir;
+        straightMode = true;
+    }
+
+    
+
+    switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,1=Rt,2=Dn,3=Left.
+    case 0 : {         dy = -1; break; }    //UP
+    case 1 : { dx = 1; break; }             //RIGHT
+    case 2 : {         dy = 1; break; }     //DOWN
+    case 3 : { dx = -1; break; }            //LEFT
+    }
+
+  // switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,2=Rt,4=Dn,6=Left.
     // case 0 : {         dy = -1; break; }
     // case 1 : { dx = 1; dy = -1; break; }
     // case 2 : { dx = 1; break; }
@@ -49,17 +93,35 @@ function move_bot( )
     // case 7 : { dx = -1; dy = -1; break; }
     // }
 
-  
-
 
     let x = (dx + g_bot.x + g_box.wid) % g_box.wid; // Move-x.  Ensure positive b4 mod.
     let y = (dy + g_bot.y + g_box.hgt) % g_box.hgt; // Ditto y.
     // let color =  100 + (1 + g_bot.color) % 156; // Incr color in nice range.    
-    let color = round(random() * 2); // Choose randomly between RGB 
+    // let color = round(random() * 2); // Choose randomly between RGB 
+
+    if (colorCounter > 2){
+        colorCounter = 0;
+    }
+
+    if (straightMode == true && straightCounter < 3){
+        g_bot.color = colorsArray[2];
+        straightCounter++;
+    }
+    else {
+        g_bot.color = colorsArray[colorCounter];
+        straightCounter = 0;
+        colorCounter++;
+    }
+
     g_bot.x = x; // Update bot x.
     g_bot.y = y;
     g_bot.dir = dir;
-    g_bot.color = colorsArray[color];
+
+    // g_bot.color = colorsArray[color];
+    
+    
+
+
     console.log( "bot x,y,dir,clr = " + x + "," + y + "," + dir + "," +  color );
 }
 
