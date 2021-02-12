@@ -1,12 +1,23 @@
-// cs-sketch.js; P5 key animation fcns.  // CF p5js.org/reference
-// Time-stamp: <2020-02-02 15:58:23 Chuck Siska>
+// Authors: Albert Paez, Ryan Patrick
+// Description: P5 key animation fcns.  
+// Add. Info: p5js.org/reference
 
 // Make global g_canvas JS 'object': a key-value 'dictionary'.
-var g_canvas = { cell_size:10, wid:64, hgt:48 }; // JS Global var, w canvas size info.
+var g_canvas = { cell_size:10, wid:60, hgt:40 }; // JS Global var, w canvas size info.
 var g_frame_cnt = 0; // Setup a P5 display-frame counter, to do anim
 var g_frame_mod = 24; // Update ever 'mod' frames.
 var g_stop = 0; // Go by default.
 
+var cellStates = Array(g_canvas.hgt);
+for(var i = 0; i < g_canvas.hgt; i++){
+    cellStates[i] = new Array(g_canvas.wid);
+}
+
+for(var i = 0; i < g_canvas.hgt; i++){
+    for(var j = 0; j < g_canvas.wid; j++){
+        cellStates[i][j] = 'black';
+    }
+}
 
 function setup() // P5 Setup Fcn
 {
@@ -17,37 +28,36 @@ function setup() // P5 Setup Fcn
     draw_grid( 10, 50, 'gray', 'white' );
 }
 
-var g_bot = { dir:0, x:30, y:20, color: 'blue' }; // Dir is 0..7 clock, w 0 up.
-var g_box = { t:1, hgt:47, l:1, wid:63 }; // Box in which bot can move.
-var colorsArray = ['blue', 'yellow', 'red']; //Array for colors
+var g_bot = { dir:0, x:24, y:32, color: 'black' }; // Dir is 0 through 3 clockwise, 0 being up.
+var g_box = { t:1, hgt:40, l:1, wid:60 }; // Box in which bot can move.
+var colorsArray = ['black', 'red', 'yellow', 'blue']; //Array for colors
 var colorCounter = 0;
 
-var straightMode = false;
+var mode = 0; // { 0 = LR Mode, 1 = Set-Count Mode, 2 = Countdown Mode }
 var straightCounter = 0;
 
-var LRMode = true;
+moveCounter = 1;
+
+function turnRight(){
+    if (g_bot.dir == 0){
+        return direction = 1;
+    }
+    if (g_bot.dir == 1){
+        return direction = 2;
+    }
+    if (g_bot.dir == 2){
+        return direction = 3;
+    }
+    if (g_bot.dir == 3){
+        return direction = 0;
+    }
+
+    return direction;
+}
 
 
 function turnLeft(){
     if (g_bot.dir == 0){
-        return direction = 1;
-    }
-    if (g_bot.dir == 1){
-        return direction = 2;
-    }
-    if (g_bot.dir == 2){
-        return direction = 3;
-    }
-    if (g_bot.dir == 3){
-        return direction = 0;
-    }
-
-    return direction;
-}
-
-
-function turnRight(){
-    if (g_bot.dir == 0){
         return direction = 3;
     }
     if (g_bot.dir == 1){
@@ -63,10 +73,8 @@ function turnRight(){
     return direction;
 }
 
-function goStraight(){
-    straightMode = true;
-    LRMode = false;
-
+function setCount(){
+    mode = 1;
     let direction = g_bot.dir;
     return direction;
 }
@@ -76,55 +84,67 @@ function goStraight(){
 
 function move_bot()
 {
-    let dir = 0; 
-    let dx = 0;
-    let dy = 0;
+    let dir = 0;
+    let dx = 0; 
+    let dy = 0; 
 
-    if (g_bot.color == 'blue'){
-        LRMode = true;
-        dir = turnLeft();
+    // We are in LR Mode, choose direction based on cell color
+    if (mode === 0){  
+        if (cellStates[g_bot.x][g_bot.y] === 'black'){
+            dir = turnLeft();
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'red'){
+            dir = turnRight();
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'yellow'){
+            dir = setCount();
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'blue'){
+            dir = turnLeft();
+        }
     }
-
-    if (g_bot.color == 'red'){
-        LRMode = true;
-        dir = turnRight();
+    else if(mode === 1) { // We are in Set-Count Mode, continue straight
+        if (cellStates[g_bot.x][g_bot.y] === 'black'){
+            straightCounter = 3;
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'red'){
+            straightCounter = 2;
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'yellow'){
+            straightCounter = 1;
+        }
+        else if (cellStates[g_bot.x][g_bot.y] === 'blue'){
+            straightCounter = 0;
+        }
+        mode = 2;
     }
-
-    if (g_bot.color == 'yellow'){
-        dir = goStraight();
+    else { // We are in Countdown Mode, continue straight
+        straightCounter--;
+        if(straightCounter <= 0) {
+            mode = 0;
+        }
     }
-
-    
 
     switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,1=Rt,2=Dn,3=Left.
-    case 0 : {         dy = -1; break; }    //UP
-    case 1 : { dx = 1; break; }             //RIGHT
-    case 2 : {         dy = 1; break; }     //DOWN
-    case 3 : { dx = -1; break; }            //LEFT
+        case 0 : {         dy = -1; break; }    //UP
+        case 1 : { dx = 1; break; }             //RIGHT
+        case 2 : {         dy = 1; break; }     //DOWN
+        case 3 : { dx = -1; break; }            //LEFT
     }
 
-  
+    cellStates[g_bot.x][g_bot.y] = colorsArray[colorCounter];
+    g_bot.color = colorsArray[colorCounter];
+    colorCounter = (colorCounter + 1) % colorsArray.length;
+      
     let x = (dx + g_bot.x + g_box.wid) % g_box.wid; // Move-x.  Ensure positive b4 mod.
     let y = (dy + g_bot.y + g_box.hgt) % g_box.hgt; // Ditto y.
-
-    if (colorCounter > 2){
-        colorCounter = 0;
-    }
-
-    if (straightMode == true && straightCounter < 2){
-        g_bot.color = colorsArray[1];
-        straightCounter++;
-    }
-    else {
-        g_bot.color = colorsArray[colorCounter];
-        straightCounter = 0;
-        colorCounter++;
-    }
 
     g_bot.x = x; // Update bot x.
     g_bot.y = y;
     g_bot.dir = dir;
-    console.log( "bot x,y,dir,clr = " + x + "," + y + "," + dir + "," +  color );
+    console.log("#" + moveCounter + " {p=(" + g_bot.x + "," +g_bot.y + "), d=" + g_bot.dir + ", m= " + mode + ", i=" + straightCounter
+    + "}; {c=" + cellStates[g_bot.x][g_bot.y] + "}");
+    moveCounter++;
 }
 
 function draw_bot( ) // Convert bot pox to grid pos & draw bot.
