@@ -15,7 +15,7 @@ for(var i = 0; i < g_canvas.hgt; i++){
 
 for(var i = 0; i < g_canvas.hgt; i++){
     for(var j = 0; j < g_canvas.wid; j++){
-        cellStates[i][j] = 'black';
+        cellStates[i][j] = 3;
     }
 }
 
@@ -28,9 +28,9 @@ function setup() // P5 Setup Fcn
     draw_grid( 10, 50, 'gray', 'white' );
 }
 
-var g_bot = { dir:0, x:24, y:32, color: 'black' }; // Dir is 0 through 3 clockwise, 0 being up.
+var g_bot = { dir:0, x:24, y:32 }; // Dir is 0 through 3 clockwise, 0 being up.
 var g_box = { t:1, hgt:40, l:1, wid:60 }; // Box in which bot can move.
-var colorsArray = ['black', 'red', 'yellow', 'blue']; //Array for colors
+var colorsArray = ['blue', 'yellow', 'red', 'black']; //Array for colors
 var colorCounter = 0;
 
 var mode = 0; // { 0 = LR Mode, 1 = Set-Count Mode, 2 = Countdown Mode }
@@ -90,30 +90,30 @@ function move_bot()
 
     // We are in LR Mode, choose direction based on cell color
     if (mode === 0){  
-        if (cellStates[g_bot.x][g_bot.y] === 'black'){
+        if (cellStates[g_bot.x][g_bot.y] === 3){
             dir = turnLeft();
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'red'){
+        else if (cellStates[g_bot.x][g_bot.y] === 2){
             dir = turnRight();
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'yellow'){
+        else if (cellStates[g_bot.x][g_bot.y] === 1){
             dir = setCount();
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'blue'){
+        else if (cellStates[g_bot.x][g_bot.y] === 0){
             dir = turnLeft();
         }
     }
     else if(mode === 1) { // We are in Set-Count Mode, continue straight
-        if (cellStates[g_bot.x][g_bot.y] === 'black'){
+        if (cellStates[g_bot.x][g_bot.y] === 3){
             straightCounter = 3;
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'red'){
+        else if (cellStates[g_bot.x][g_bot.y] === 2){
             straightCounter = 2;
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'yellow'){
+        else if (cellStates[g_bot.x][g_bot.y] === 1){
             straightCounter = 1;
         }
-        else if (cellStates[g_bot.x][g_bot.y] === 'blue'){
+        else if (cellStates[g_bot.x][g_bot.y] === 0){
             straightCounter = 0;
         }
         mode = 2;
@@ -132,9 +132,7 @@ function move_bot()
         case 3 : { dx = -1; break; }            //LEFT
     }
 
-    cellStates[g_bot.x][g_bot.y] = colorsArray[colorCounter];
-    g_bot.color = colorsArray[colorCounter];
-    colorCounter = (colorCounter + 1) % colorsArray.length;
+    cellStates[g_bot.x][g_bot.y] = (cellStates[g_bot.x][g_bot.y] + 1) % colorsArray.length;
       
     let x = (dx + g_bot.x + g_box.wid) % g_box.wid; // Move-x.  Ensure positive b4 mod.
     let y = (dy + g_bot.y + g_box.hgt) % g_box.hgt; // Ditto y.
@@ -156,15 +154,15 @@ function draw_bot( ) // Convert bot pox to grid pos & draw bot.
     let big = sz -2; // Stay inside cell walls.
     // Fill 'color': its a keystring, or a hexstring like "#5F", etc.  See P5 docs.
     // fill( "#" + g_bot.color ); // Concat string, auto-convert the number to string.
-    fill( g_bot.color ); // Concat string, auto-convert the number to string.
+    fill( colorsArray[cellStates[g_bot.x][g_bot.y]] ); // Concat string, auto-convert the number to string.
     // console.log( "x,y,big = " + x + "," + y + "," + big );
     let acolors = get( x + sz2, y + sz2 ); // Get cell interior pixel color [RGBA] array.
     let pix = acolors[ 0 ] + acolors[ 1 ] + acolors[ 2 ];
     // console.log( "acolors,pix = " + acolors + ", " + pix );
 
     // (*) Here is how to detect what's at the pixel location.  See P5 docs for fancier...
-    if (0 != pix) { fill( 0 ); stroke( 0 ); } // Turn off color of prior bot-visited cell.
-    else { stroke( 'white' ); } // Else Bot visiting this cell, so color it.
+    //if (0 != pix) { fill( 0 ); stroke( 0 ); } // Turn off color of prior bot-visited cell.
+    //else { stroke( 'white' ); } // Else Bot visiting this cell, so color it.
 
     // Paint the cell.
     rect( x, y, big, big );
