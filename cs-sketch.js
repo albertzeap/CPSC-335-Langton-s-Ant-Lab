@@ -35,6 +35,7 @@ function setup() // P5 Setup Fcn
     draw_grid( 10, 50, 'gray', 'white' );
     console.log("#" + moveCounter + " {p=(" + g_bot.x + "," + g_bot.y + "), d=" + g_bot.dir + ", m= " + mode + ", i=" + straightCounter
     + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + "}");
+    moveCounter++;
 }
 
 function turnRight(){
