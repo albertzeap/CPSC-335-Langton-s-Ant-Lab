@@ -33,7 +33,7 @@ function setup() // P5 Setup Fcn
     let width = sz * g_canvas.wid;  // Our 'canvas' uses cells of given size, not 1x1 pixels.
     let height = sz * g_canvas.hgt;
     createCanvas( width, height );  // Make a P5 canvas.
-    draw_grid( 10, 50, 'gray', 'white' );
+    draw_grid( 10, 50, 'gray', 'white ' );
     console.log("#" + moveCounter + " {p=(" + g_bot.x + "," + g_bot.y + "), d=" + g_bot.dir + ", m= " + mode + ", i=" + straightCounter
     + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + "}");
     moveCounter++;
@@ -76,8 +76,6 @@ function turnLeft(){
 
 function setCount(){
     mode = 1;
-    //let direction = g_bot.dir;
-    //g_bot.dir = direction;
     return g_bot.dir;
 }
 
@@ -86,7 +84,6 @@ function setCount(){
 
 function move_bot()
 {
-    //let dir = 0;
     let dx = 0;
     let dy = 0;
 
