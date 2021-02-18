@@ -1,5 +1,5 @@
-// Authors: Albert Paez, Ryan Patrick
-// Description: P5 key animation fcns.  
+// Authors: Albert Paez, Ryan Patrick, Ryan Carney
+// Description: P5 key animation fcns.
 // Add. Info: p5js.org/reference
 
 // Make global g_canvas JS 'object': a key-value 'dictionary'.
@@ -25,6 +25,7 @@ var colorsArray = ['blue', 'yellow', 'red', 'black']; //Array for colors
 var mode = 0; // { 0 = LR Mode, 1 = Set-Count Mode, 2 = Countdown Mode }
 var straightCounter = 0;
 var moveCounter = 1;
+var dir = 0;
 
 function setup() // P5 Setup Fcn
 {
@@ -75,8 +76,7 @@ function turnLeft(){
 
 function setCount(){
     mode = 1;
-    let direction = g_bot.dir;
-    return direction;
+    return g_bot.dir;
 }
 
 
@@ -84,12 +84,11 @@ function setCount(){
 
 function move_bot()
 {
-    let dir = 0;
-    let dx = 0; 
-    let dy = 0; 
+    let dx = 0;
+    let dy = 0;
 
     // We are in LR Mode, choose direction based on cell color
-    if (mode === 0){  
+    if (mode === 0){
         if (cellStates[g_bot.x][g_bot.y] === 3){
             dir = turnLeft();
         }
@@ -120,9 +119,9 @@ function move_bot()
     }
     else { // We are in Countdown Mode, continue straight
         straightCounter--;
-        if(straightCounter <= 0) {
+       if(straightCounter < 0) {
             mode = 0;
-        }
+       }
     }
 
     switch (dir) { // Convert dir to x,y deltas: dir = clock w 0=Up,1=Rt,2=Dn,3=Left.
@@ -133,7 +132,7 @@ function move_bot()
     }
 
     cellStates[g_bot.x][g_bot.y] = (cellStates[g_bot.x][g_bot.y] + 1) % colorsArray.length;
-      
+
     let x = (dx + g_bot.x + g_box.wid) % g_box.wid; // Move-x.  Ensure positive b4 mod.
     let y = (dy + g_bot.y + g_box.hgt) % g_box.hgt; // Ditto y.
 
