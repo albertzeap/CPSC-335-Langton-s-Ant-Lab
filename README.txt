@@ -19,15 +19,15 @@ Intro
       2) Landing on a red cell results in a right turn 
       3) Landing on a yellow cell results in set-count mode
   
-  You can stop/restart the bot with any keypress.  You can move the bot to any cell with a mouse-click.
-
   This is an example project using HTML, Javascript (JS), and P5.js
   which is a JS-adapted version of the Processing Language.  CF HTML and
   JS on the web (eg, Wikipedia).  More on P5 is at
   p5js.org/reference.and at github.com/processing/p5.js/wiki.
+  
+Features
 
-  P5 provides sutomated animation (via a user-built "draw" function),
-  and GUI manipulation functions that are simpler than JS.
+   You can stop/restart the bot with any keypress.  
+   You can move the bot to any cell with a mouse-click.
 
 Zip Contents
 
@@ -64,19 +64,8 @@ Installation & Running
 
 Known Bugs
 
-  o- Bot cell drawing over-writes a pixels-worth of the cell's grid lines.
-
-Warnings
-
-  o- Clicking outside the grid wraps the mouse x.y back into the grid --
-     maybe at a weird-looking spot.  Enjoy.
-
-  o- Testing was light.  Didn't try all key or mouse combos.
-
-Testing
-
-  o- Following installation instruction, above, watched it run, and
-  tryed a few keypresses and mouse clicks.  Looks okay to ship.
+  - Bot cell drawing over-writes a pixels-worth of the cell's grid lines.
+  - Clicking outside the canvas results in ant starting at unpredictable areas
 
 Credits
 
