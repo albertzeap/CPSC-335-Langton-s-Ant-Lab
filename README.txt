@@ -1,12 +1,25 @@
 Readme for js-p5-example
-Time-stamp: <2020-09-02 14:11:19 Chuck Siska>
+Team: Albert Paez, Ryan Carney, Ryan Patrick
+Class: CPSC 335-03
+Project 1: Lark's Ant 
 ------------------------------------------------------------
 
 Intro
-
-  This example draws a grid and runs an invisible bot from cell to cell
-  on the grid changing its colors.  You can stop/restart the bot with
-  any keypress.  You can move the bot to any cell with a mouse-click.
+  
+  The following example implements a more complex version of Langton's Ant
+  known as Lark's Ant. This version follows the following modes and rules: 
+  
+   Modes 
+      1) LR Mode = Ant turns left and right
+      2) Set-Count Mode = Sets count for going straight
+      3) Countdown Mode = Goes straight until countdown is over
+    
+   Rules
+      1) Landing on a black or blue cells results in a left turn
+      2) Landing on a red cell results in a right turn 
+      3) Landing on a yellow cell results in set-count mode
+  
+  You can stop/restart the bot with any keypress.  You can move the bot to any cell with a mouse-click.
 
   This is an example project using HTML, Javascript (JS), and P5.js
   which is a JS-adapted version of the Processing Language.  CF HTML and
@@ -18,7 +31,7 @@ Intro
 
 Zip Contents
 
-  File readme.txt.  This file.
+  File README.txt.  This file.
 
   File pix-js-p5-example-1.JPG.  A snapshot of the example webpage.
 
