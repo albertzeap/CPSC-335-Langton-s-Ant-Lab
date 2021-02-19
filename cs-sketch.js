@@ -121,6 +121,7 @@ function move_bot()
         straightCounter--;
        if(straightCounter < 0) {
             mode = 0;
+            straightCounter = 0;
        }
     }
 
