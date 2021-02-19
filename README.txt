@@ -33,14 +33,9 @@ Zip Contents
 
   File README.txt.  This file.
 
-  File pix-js-p5-example-1.JPG.  A snapshot of the example webpage.
-
-  File pix-js-p5-example2-F12-Console.JPG  A webpage + F12 Console.
-    Shows entering some global var names to see their current values.
-
-  File index-js-p5-example.html. Drag and drop this into a browser to
+  File LarksAnt.html. Drag and drop this into a browser to
     run the example.
-    Click to set new loc for drunk-bot (via mousePressed).
+    Click to set new loc for ant (via mousePressed).
     Hit (almost) any key to toggle bot on or off (via keyPressed).
 
   File p5.js. This is the P5 package.  It is loaded inside the html.
@@ -62,11 +57,10 @@ Installation & Running
 
   1. Extract the .zip file into a folder.
 
-  2. Drag the index HTML file, index-js-p5-example.html, into a browser
+  2. Drag the index HTML file, LarksAnt.html, into a browser
     window.  The example P5 program should start immediately.  You
     should see a 640x480 grid (white lines on black background) with
-    row/column headers and some of the grid cells colored.  See the
-    picture pix-js-p5-example-1.JPG.
+    row/column headers and some of the grid cells colored.  
 
 Known Bugs
 
