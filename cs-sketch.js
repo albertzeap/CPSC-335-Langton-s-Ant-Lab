@@ -22,6 +22,7 @@ for(var i = 0; i < g_canvas.hgt; i++){
 var g_bot = { dir:0, x:24, y:32 }; // Dir is 0 through 3 clockwise, 0 being up.
 var g_box = { t:1, hgt:40, l:1, wid:60 }; // Box in which bot can move.
 var colorsArray = ['blue', 'yellow', 'red', 'black']; //Array for colors
+var triCode = [1, 2, 0, 1]; // Defines what type of move each color should cause
 var mode = 0; // { 0 = LR Mode, 1 = Set-Count Mode, 2 = Countdown Mode }
 var straightCounter = 0;
 var moveCounter = 1;
@@ -34,8 +35,8 @@ function setup() // P5 Setup Fcn
     let height = sz * g_canvas.hgt;
     createCanvas( width, height );  // Make a P5 canvas.
     draw_grid( 10, 50, 'gray', 'white' );
-    console.log("#" + moveCounter + " {p=(" + g_bot.x + "," + g_bot.y + "), d=" + g_bot.dir + ", m= " + mode + ", i=" + straightCounter
-    + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + "}");
+    console.log("#" + moveCounter + " {p=(" + g_bot.x + "," + g_bot.y + "), d=" + g_bot.dir + ", m=" + mode + ", i=" + straightCounter
+    + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + ", t=" + triCode[cellStates[g_bot.x][g_bot.y]] + "}");
     moveCounter++;
 }
 
@@ -140,8 +141,8 @@ function move_bot()
     g_bot.x = x; // Update bot x.
     g_bot.y = y;
     g_bot.dir = dir;
-    console.log("#" + moveCounter + " {p=(" + g_bot.x + "," +g_bot.y + "), d=" + g_bot.dir + ", m= " + mode + ", i=" + straightCounter
-    + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + "}");
+    console.log("#" + moveCounter + " {p=(" + g_bot.x + "," +g_bot.y + "), d=" + g_bot.dir + ", m=" + mode + ", i=" + straightCounter
+    + "}; {c=" + colorsArray[cellStates[g_bot.x][g_bot.y]] + ", t=" + triCode[cellStates[g_bot.x][g_bot.y]] + "}");
     moveCounter++;
 }
 
